@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import {
   PieChart, Pie, Cell, Tooltip, BarChart, Bar, XAxis, YAxis,
   CartesianGrid, ResponsiveContainer, RadarChart, Radar, PolarGrid,
-  PolarAngleAxis, PolarRadiusAxis, Legend
+  PolarAngleAxis, PolarRadiusAxis
 } from 'recharts'
 import { getFindings, getFindingsSummary } from '../services/api'
 import { Finding, CATEGORIES } from '../utils/types'
@@ -51,17 +51,17 @@ export const RiskAnalysis: React.FC = () => {
 
       {loading ? (
         <div className="flex items-center justify-center py-16">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500" />
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600" />
         </div>
       ) : (
         <>
           {/* Severity summary */}
-          <div className="grid grid-cols-5 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
             {['Critical', 'High', 'Medium', 'Low', 'Informational'].map(sev => {
               const count = findings.filter(f => f.severity === sev).length
               return (
-                <div key={sev} className="bg-slate-900 border border-slate-800 rounded-xl p-4 text-center">
-                  <div className="text-2xl font-bold" style={{ color: SEV_COLORS[sev as keyof typeof SEV_COLORS] }}>{count}</div>
+                <div key={sev} className="bg-white border border-slate-200 shadow-sm rounded-xl p-4 text-center">
+                  <div className="text-2xl font-bold mb-1" style={{ color: SEV_COLORS[sev as keyof typeof SEV_COLORS] }}>{count}</div>
                   <SeverityBadge severity={sev} />
                 </div>
               )
@@ -71,31 +71,31 @@ export const RiskAnalysis: React.FC = () => {
           {/* Charts */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
             <Card>
-              <h3 className="font-semibold text-white mb-4">Findings by Severity</h3>
+              <h3 className="font-semibold text-slate-800 mb-4">Findings by Severity</h3>
               {sevData.length === 0 ? (
-                <div className="text-center py-12 text-slate-600">No findings yet</div>
+                <div className="text-center py-12 text-slate-400">No findings yet</div>
               ) : (
                 <ResponsiveContainer width="100%" height={250}>
                   <PieChart>
-                    <Pie data={sevData} cx="50%" cy="50%" outerRadius={100} dataKey="value"
+                    <Pie data={sevData} cx="50%" cy="50%" outerRadius={90} dataKey="value"
                       label={({ name, value }) => `${name}: ${value}`}>
                       {sevData.map((e, i) => <Cell key={i} fill={e.color} />)}
                     </Pie>
-                    <Tooltip contentStyle={{ background: '#1e293b', border: '1px solid #334155', borderRadius: 8 }} />
+                    <Tooltip contentStyle={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 8, boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
                   </PieChart>
                 </ResponsiveContainer>
               )}
             </Card>
 
             <Card>
-              <h3 className="font-semibold text-white mb-4">Findings by Category</h3>
+              <h3 className="font-semibold text-slate-800 mb-4">Findings by Category</h3>
               <ResponsiveContainer width="100%" height={250}>
-                <BarChart data={catData} margin={{ top: 0, right: 0, left: -25, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
-                  <XAxis dataKey="name" tick={{ fill: '#94a3b8', fontSize: 9 }} />
-                  <YAxis tick={{ fill: '#94a3b8', fontSize: 10 }} />
-                  <Tooltip contentStyle={{ background: '#1e293b', border: '1px solid #334155', borderRadius: 8 }} />
-                  <Bar dataKey="findings" fill="#3b82f6" radius={[4, 4, 0, 0]} />
+                <BarChart data={catData} margin={{ top: 10, right: 10, left: -25, bottom: 0 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                  <XAxis dataKey="name" tick={{ fill: '#64748b', fontSize: 10 }} />
+                  <YAxis tick={{ fill: '#64748b', fontSize: 10 }} />
+                  <Tooltip contentStyle={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 8, boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
+                  <Bar dataKey="findings" fill="#2563eb" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </Card>
@@ -103,20 +103,20 @@ export const RiskAnalysis: React.FC = () => {
 
           {/* Radar */}
           <Card>
-            <h3 className="font-semibold text-white mb-4">Category Coverage Radar</h3>
+            <h3 className="font-semibold text-slate-800 mb-4">Category Coverage Radar</h3>
             <ResponsiveContainer width="100%" height={300}>
               <RadarChart data={radarData}>
-                <PolarGrid stroke="#334155" />
-                <PolarAngleAxis dataKey="category" tick={{ fill: '#94a3b8', fontSize: 11 }} />
-                <PolarRadiusAxis tick={{ fill: '#64748b', fontSize: 9 }} />
-                <Radar name="Findings" dataKey="findings" stroke="#3b82f6" fill="#3b82f6" fillOpacity={0.3} />
+                <PolarGrid stroke="#e2e8f0" />
+                <PolarAngleAxis dataKey="category" tick={{ fill: '#475569', fontSize: 11 }} />
+                <PolarRadiusAxis tick={{ fill: '#94a3b8', fontSize: 9 }} />
+                <Radar name="Findings" dataKey="findings" stroke="#2563eb" fill="#3b82f6" fillOpacity={0.25} />
               </RadarChart>
             </ResponsiveContainer>
           </Card>
 
           {/* Marking Scheme */}
           <Card>
-            <h3 className="font-semibold text-white mb-2">📋 Marking Scheme Assessment</h3>
+            <h3 className="font-semibold text-slate-800 mb-1">📋 Marking Scheme Assessment</h3>
             <p className="text-slate-500 text-xs mb-5">
               Self-assessment checklist — not official marks. Use this to verify project completeness.
             </p>
@@ -125,25 +125,25 @@ export const RiskAnalysis: React.FC = () => {
                 <div key={item.criteria} className="flex items-center gap-4">
                   <div className="flex-1">
                     <div className="flex justify-between mb-1">
-                      <span className="text-sm font-medium text-white">{item.criteria}</span>
-                      <span className="text-sm text-slate-400">{item.marks} marks</span>
+                      <span className="text-sm font-medium text-slate-700">{item.criteria}</span>
+                      <span className="text-sm font-semibold text-slate-600">{item.marks} marks</span>
                     </div>
-                    <div className="w-full bg-slate-800 rounded-full h-2">
-                      <div className="bg-blue-500 h-2 rounded-full" style={{ width: `${(item.marks / item.maxMarks) * 100}%` }} />
+                    <div className="w-full bg-slate-100 rounded-full h-2">
+                      <div className="bg-blue-600 h-2 rounded-full" style={{ width: `${(item.marks / item.maxMarks) * 100}%` }} />
                     </div>
                   </div>
                 </div>
               ))}
-              <div className="flex justify-between pt-3 border-t border-slate-800">
-                <span className="font-bold text-white">TOTAL</span>
-                <span className="font-bold text-blue-400">100 marks</span>
+              <div className="flex justify-between pt-3 border-t border-slate-200">
+                <span className="font-bold text-slate-800">TOTAL</span>
+                <span className="font-bold text-blue-600">100 marks</span>
               </div>
             </div>
           </Card>
 
           {/* Self-assessment checklist */}
           <Card>
-            <h3 className="font-semibold text-white mb-4">✅ Project Completeness Checklist</h3>
+            <h3 className="font-semibold text-slate-800 mb-4">✅ Project Completeness Checklist</h3>
             <div className="space-y-3">
               {CATEGORIES.map(cat => {
                 const catFindings = findings.filter(f => f.category_slug === cat.slug)
@@ -155,13 +155,13 @@ export const RiskAnalysis: React.FC = () => {
                 const score = [hasFindings, hasPayload, hasSteps, hasImpact, hasRec].filter(Boolean).length
 
                 return (
-                  <div key={cat.slug} className="bg-slate-800/50 rounded-lg p-4">
+                  <div key={cat.slug} className="bg-slate-50 border border-slate-200/80 rounded-lg p-4">
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-2">
                         <span>{cat.icon}</span>
-                        <span className="font-medium text-white text-sm">{cat.name}</span>
+                        <span className="font-semibold text-slate-800 text-sm">{cat.name}</span>
                       </div>
-                      <span className="text-xs text-slate-400">{score}/5 criteria met</span>
+                      <span className="text-xs font-medium text-slate-500">{score}/5 criteria met</span>
                     </div>
                     <div className="flex gap-2 flex-wrap">
                       {[
@@ -171,7 +171,7 @@ export const RiskAnalysis: React.FC = () => {
                         [hasImpact, 'Impact assessed'],
                         [hasRec, 'Recommendations'],
                       ].map(([ok, label]) => (
-                        <span key={label as string} className={`text-xs px-2 py-1 rounded ${ok ? 'bg-emerald-900/30 text-emerald-400' : 'bg-slate-900 text-slate-600'}`}>
+                        <span key={label as string} className={`text-xs px-2.5 py-1 rounded-md font-medium ${ok ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-white text-slate-400 border border-slate-200'}`}>
                           {ok ? '✓' : '○'} {label}
                         </span>
                       ))}

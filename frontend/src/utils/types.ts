@@ -177,20 +177,20 @@ export const CATEGORIES: { slug: string; name: string; icon: string; owasp: stri
 ]
 
 export const SEVERITY_COLORS: Record<string, string> = {
-  Critical:      'text-red-400 bg-red-900/30 border-red-700/50',
-  High:          'text-orange-400 bg-orange-900/30 border-orange-700/50',
-  Medium:        'text-yellow-400 bg-yellow-900/30 border-yellow-700/50',
-  Low:           'text-blue-400 bg-blue-900/30 border-blue-700/50',
-  Informational: 'text-slate-400 bg-slate-800 border-slate-600',
+  Critical:      'text-red-700 bg-red-50 border-red-200',
+  High:          'text-orange-700 bg-orange-50 border-orange-200',
+  Medium:        'text-amber-700 bg-amber-50 border-amber-200',
+  Low:           'text-blue-700 bg-blue-50 border-blue-200',
+  Informational: 'text-slate-700 bg-slate-100 border-slate-200',
 }
 
 export const STATUS_COLORS: Record<string, string> = {
-  'Not Started':           'text-slate-400 bg-slate-800',
-  'In Progress':           'text-blue-400 bg-blue-900/30',
-  'Evidence Pending':      'text-yellow-400 bg-yellow-900/30',
-  'Tested':                'text-purple-400 bg-purple-900/30',
-  'Vulnerability Confirmed': 'text-red-400 bg-red-900/30',
-  'Not Vulnerable':        'text-green-400 bg-green-900/30',
-  'Blocked':               'text-orange-400 bg-orange-900/30',
-  'Completed':             'text-emerald-400 bg-emerald-900/30',
+  'Not Started':           'text-slate-600 bg-slate-100 border-slate-200',
+  'In Progress':           'text-blue-700 bg-blue-50 border-blue-200',
+  'Evidence Pending':      'text-amber-700 bg-amber-50 border-amber-200',
+  'Tested':                'text-purple-700 bg-purple-50 border-purple-200',
+  'Vulnerability Confirmed': 'text-red-700 bg-red-50 border-red-200',
+  'Not Vulnerable':        'text-green-700 bg-green-50 border-green-200',
+  'Blocked':               'text-orange-700 bg-orange-50 border-orange-200',
+  'Completed':             'text-emerald-700 bg-emerald-50 border-emerald-200',
 }

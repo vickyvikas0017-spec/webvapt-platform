@@ -30,35 +30,35 @@ export const Layout: React.FC = () => {
   const parts = location.pathname.split('/').filter(Boolean)
 
   return (
-    <div className="min-h-screen bg-slate-950 flex">
+    <div className="min-h-screen bg-slate-50 flex">
       <Sidebar />
       <main className={clsx(
-        'flex-1 transition-all duration-300 min-h-screen',
+        'flex-1 transition-all duration-300 min-h-screen bg-slate-50',
         sidebarOpen ? 'ml-64' : 'ml-16'
       )}>
         {/* Top bar */}
-        <header className="sticky top-0 z-40 bg-slate-900/80 backdrop-blur border-b border-slate-800 px-6 py-3 flex items-center gap-2">
-          <Home size={14} className="text-slate-500" />
-          <ChevronRight size={14} className="text-slate-600" />
+        <header className="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-slate-200 px-6 py-3.5 flex items-center gap-2 shadow-2xs">
+          <Home size={14} className="text-slate-400" />
+          <ChevronRight size={14} className="text-slate-300" />
           {parts.length === 0 ? (
-            <span className="text-sm text-slate-300">Dashboard</span>
+            <span className="text-sm font-semibold text-slate-800">Dashboard</span>
           ) : (
             parts.map((part, i) => (
               <React.Fragment key={part}>
                 <span className={clsx(
-                  'text-sm',
-                  i === parts.length - 1 ? 'text-blue-400' : 'text-slate-400'
+                  'text-sm font-medium',
+                  i === parts.length - 1 ? 'text-blue-600 font-semibold' : 'text-slate-500'
                 )}>
                   {breadcrumbMap[part] || part}
                 </span>
-                {i < parts.length - 1 && <ChevronRight size={14} className="text-slate-600" />}
+                {i < parts.length - 1 && <ChevronRight size={14} className="text-slate-300" />}
               </React.Fragment>
             ))
           )}
         </header>
 
         {/* Page content */}
-        <div className="p-6">
+        <div className="p-6 max-w-7xl mx-auto">
           <Outlet />
         </div>
       </main>

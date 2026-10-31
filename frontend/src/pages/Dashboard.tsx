@@ -5,8 +5,7 @@ import {
 } from 'recharts'
 import {
   Shield, AlertTriangle, CheckCircle, Clock, Activity,
-  FileText, Image, ExternalLink, Calendar, Users, GraduationCap,
-  Sparkles
+  FileText, Image, ExternalLink, Calendar, Users, GraduationCap
 } from 'lucide-react'
 import { useApp } from '../hooks/useApp'
 import { getDashboard } from '../services/api'
@@ -30,13 +29,13 @@ export const Dashboard: React.FC = () => {
 
   if (!projectId) {
     return (
-      <div className="flex flex-col items-center justify-center h-96">
-        <Shield size={64} className="text-blue-500 mb-4" />
-        <h1 className="text-3xl font-bold text-white mb-1">WEBVAPT</h1>
-        <p className="text-slate-400 text-lg mb-4 font-mono text-sm tracking-wide">
+      <div className="flex flex-col items-center justify-center h-96 bg-white rounded-xl border border-slate-200 p-8 shadow-xs">
+        <Shield size={64} className="text-blue-600 mb-4" />
+        <h1 className="text-3xl font-extrabold text-slate-900 mb-1">WEBVAPT</h1>
+        <p className="text-slate-500 text-sm mb-4 font-mono tracking-wide">
           PORTSWIGGER WEB SECURITY ACADEMY MINOR PROJECT
         </p>
-        <p className="text-slate-500 text-sm mb-6">No project found. Create your project to get started.</p>
+        <p className="text-slate-600 text-sm mb-6">No project found. Create your project to get started.</p>
         <Button onClick={() => navigate('/settings')} size="lg">
           Create Project
         </Button>
@@ -47,7 +46,7 @@ export const Dashboard: React.FC = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500" />
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600" />
       </div>
     )
   }
@@ -56,11 +55,11 @@ export const Dashboard: React.FC = () => {
   const s = stats?.student
 
   const sevData = [
-    { name: 'Critical', value: stats?.critical_findings || 0, color: '#ef4444' },
-    { name: 'High', value: stats?.high_findings || 0, color: '#f97316' },
-    { name: 'Medium', value: stats?.medium_findings || 0, color: '#eab308' },
-    { name: 'Low', value: stats?.low_findings || 0, color: '#3b82f6' },
-    { name: 'Info', value: stats?.info_findings || 0, color: '#94a3b8' },
+    { name: 'Critical', value: stats?.critical_findings || 0, color: '#dc2626' },
+    { name: 'High', value: stats?.high_findings || 0, color: '#ea580c' },
+    { name: 'Medium', value: stats?.medium_findings || 0, color: '#d97706' },
+    { name: 'Low', value: stats?.low_findings || 0, color: '#2563eb' },
+    { name: 'Info', value: stats?.info_findings || 0, color: '#64748b' },
   ]
 
   const catBarData = stats?.category_stats.map(c => ({
@@ -72,32 +71,32 @@ export const Dashboard: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* ── Section 5: Application Heading & Project Metadata ── */}
-      <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-sm">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-5">
+      <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-xs">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-5">
           <div>
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center shadow-md shadow-blue-500/20">
+              <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center shadow-xs">
                 <Shield size={22} className="text-white" />
               </div>
               <div>
-                <h1 className="text-2xl font-black text-white tracking-wider">WEBVAPT</h1>
-                <p className="text-blue-400 font-semibold text-xs tracking-wider uppercase">
+                <h1 className="text-2xl font-black text-slate-900 tracking-wider">WEBVAPT</h1>
+                <p className="text-blue-600 font-bold text-xs tracking-wider uppercase">
                   PortSwigger Web Security Academy Minor Project
                 </p>
               </div>
             </div>
-            <div className="mt-3 text-sm text-slate-300 font-medium">
+            <div className="mt-3 text-base text-slate-700 font-semibold">
               {p?.name || 'Vulnerability Assessment Platform'}
             </div>
           </div>
 
           <div className="flex items-center gap-6">
             <div className="text-right">
-              <div className="text-3xl font-extrabold text-blue-400">{stats?.overall_completion || 0}%</div>
-              <div className="text-slate-500 text-xs font-medium uppercase tracking-wider">Project Completion</div>
+              <div className="text-3xl font-extrabold text-blue-600">{stats?.overall_completion || 0}%</div>
+              <div className="text-slate-500 text-xs font-semibold uppercase tracking-wider">Project Completion</div>
             </div>
-            <div className="pl-6 border-l border-slate-800 text-right">
-              <div className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-950 text-emerald-400 border border-emerald-800">
+            <div className="pl-6 border-l border-slate-200 text-right">
+              <div className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
                 {stats?.report_status || 'Not Generated'}
               </div>
               <div className="text-slate-500 text-xs mt-1 font-medium">Report Status</div>
@@ -106,29 +105,29 @@ export const Dashboard: React.FC = () => {
         </div>
 
         {/* Student & Project Details Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 pt-4 text-xs text-slate-400">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 pt-4 text-xs">
           <div className="flex items-center gap-2">
-            <GraduationCap size={15} className="text-blue-400 flex-shrink-0" />
+            <GraduationCap size={16} className="text-blue-600 flex-shrink-0" />
             <div className="truncate">
-              <span className="text-slate-500">Student: </span>
-              <span className="text-slate-200 font-medium">{s?.student_name || 'N/A'}</span>
-              {s?.usn && <span className="text-slate-400"> ({s.usn})</span>}
+              <span className="text-slate-500 font-medium">Student: </span>
+              <span className="text-slate-800 font-semibold">{s?.student_name || 'N/A'}</span>
+              {s?.usn && <span className="text-slate-500 font-normal"> ({s.usn})</span>}
             </div>
           </div>
 
           <div className="flex items-center gap-2">
-            <Shield size={15} className="text-blue-400 flex-shrink-0" />
+            <Shield size={16} className="text-blue-600 flex-shrink-0" />
             <div className="truncate">
-              <span className="text-slate-500">College: </span>
-              <span className="text-slate-200 font-medium">{s?.college || 'N/A'}</span>
+              <span className="text-slate-500 font-medium">College: </span>
+              <span className="text-slate-800 font-semibold">{s?.college || 'N/A'}</span>
             </div>
           </div>
 
           <div className="flex items-center gap-2">
-            <Users size={15} className="text-blue-400 flex-shrink-0" />
+            <Users size={16} className="text-blue-600 flex-shrink-0" />
             <div className="truncate">
-              <span className="text-slate-500">Batch & Team: </span>
-              <span className="text-slate-200 font-medium">
+              <span className="text-slate-500 font-medium">Batch & Team: </span>
+              <span className="text-slate-800 font-semibold">
                 {s?.batch || 'Batch A'}
                 {s?.team_members ? ` · ${s.team_members.split('\n')[0]}` : ''}
               </span>
@@ -136,10 +135,10 @@ export const Dashboard: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-2">
-            <Calendar size={15} className="text-blue-400 flex-shrink-0" />
+            <Calendar size={16} className="text-blue-600 flex-shrink-0" />
             <div className="truncate">
-              <span className="text-slate-500">Start Date: </span>
-              <span className="text-slate-200 font-medium">{p?.start_date || 'N/A'}</span>
+              <span className="text-slate-500 font-medium">Start Date: </span>
+              <span className="text-slate-800 font-semibold">{p?.start_date || 'N/A'}</span>
             </div>
           </div>
         </div>
@@ -148,25 +147,25 @@ export const Dashboard: React.FC = () => {
       {/* ── Section 5: Stat Counters Row ── */}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 gap-3">
         <StatCard label="Categories" value={stats?.total_categories || 8} />
-        <StatCard label="Completed" value={stats?.completed_assessments || 0} color="text-emerald-400" icon={<CheckCircle size={16} />} />
-        <StatCard label="In Progress" value={stats?.in_progress_assessments || 0} color="text-blue-400" icon={<Activity size={16} />} />
-        <StatCard label="Pending" value={stats?.pending_assessments || 0} color="text-slate-400" icon={<Clock size={16} />} />
-        <StatCard label="Findings" value={stats?.total_findings || 0} color="text-yellow-400" icon={<AlertTriangle size={16} />} />
-        <StatCard label="Critical" value={stats?.critical_findings || 0} color="text-red-400" />
-        <StatCard label="High" value={stats?.high_findings || 0} color="text-orange-400" />
-        <StatCard label="Evidence" value={stats?.total_evidence || 0} color="text-purple-400" icon={<Image size={16} />} />
+        <StatCard label="Completed" value={stats?.completed_assessments || 0} color="text-emerald-600" icon={<CheckCircle size={16} />} />
+        <StatCard label="In Progress" value={stats?.in_progress_assessments || 0} color="text-blue-600" icon={<Activity size={16} />} />
+        <StatCard label="Pending" value={stats?.pending_assessments || 0} color="text-slate-500" icon={<Clock size={16} />} />
+        <StatCard label="Findings" value={stats?.total_findings || 0} color="text-amber-600" icon={<AlertTriangle size={16} />} />
+        <StatCard label="Critical" value={stats?.critical_findings || 0} color="text-red-600" />
+        <StatCard label="High" value={stats?.high_findings || 0} color="text-orange-600" />
+        <StatCard label="Evidence" value={stats?.total_evidence || 0} color="text-purple-600" icon={<Image size={16} />} />
       </div>
 
       {/* Medium & Low Findings + Report Status Banner */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
-        <StatCard label="Medium Severity Findings" value={stats?.medium_findings || 0} color="text-yellow-400" />
-        <StatCard label="Low Severity Findings" value={stats?.low_findings || 0} color="text-blue-400" />
-        <StatCard label="Informational Findings" value={stats?.info_findings || 0} color="text-slate-400" />
-        <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 flex flex-col justify-between">
-          <div className="text-xs text-slate-400 font-medium">Report Generation Status</div>
+        <StatCard label="Medium Severity" value={stats?.medium_findings || 0} color="text-amber-600" />
+        <StatCard label="Low Severity" value={stats?.low_findings || 0} color="text-blue-600" />
+        <StatCard label="Informational" value={stats?.info_findings || 0} color="text-slate-600" />
+        <div className="bg-white border border-slate-200 rounded-xl p-4 flex flex-col justify-between shadow-xs">
+          <div className="text-xs text-slate-500 font-medium uppercase tracking-wider">Report Generation</div>
           <div className="flex items-center justify-between mt-2">
-            <span className="text-sm font-semibold text-white">{stats?.report_status || 'Not Generated'}</span>
-            <Button size="sm" variant="ghost" onClick={() => navigate('/report')} className="text-xs py-1 px-2">
+            <span className="text-sm font-bold text-slate-900">{stats?.report_status || 'Not Generated'}</span>
+            <Button size="sm" variant="secondary" onClick={() => navigate('/report')} className="text-xs py-1 px-2.5">
               <FileText size={12} /> View Reports
             </Button>
           </div>
@@ -177,10 +176,10 @@ export const Dashboard: React.FC = () => {
       <Card>
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
-            <h2 className="font-semibold text-white text-sm">Overall Assessment Completion</h2>
+            <h2 className="font-bold text-slate-900 text-sm">Overall Assessment Completion</h2>
             <span className="text-xs text-slate-500">({stats?.completed_assessments || 0} of {stats?.total_categories || 8} completed)</span>
           </div>
-          <span className="text-blue-400 font-bold">{stats?.overall_completion || 0}%</span>
+          <span className="text-blue-600 font-extrabold text-base">{stats?.overall_completion || 0}%</span>
         </div>
         <ProgressBar value={stats?.overall_completion || 0} />
       </Card>
@@ -188,7 +187,7 @@ export const Dashboard: React.FC = () => {
       {/* Charts Row */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
         <Card>
-          <h3 className="font-semibold text-white mb-4 text-sm">Findings by Severity</h3>
+          <h3 className="font-bold text-slate-900 mb-4 text-sm">Findings by Severity</h3>
           <ResponsiveContainer width="100%" height={210}>
             <PieChart>
               <Pie
@@ -201,20 +200,20 @@ export const Dashboard: React.FC = () => {
               >
                 {sevData.map((entry, i) => <Cell key={i} fill={entry.color} />)}
               </Pie>
-              <Tooltip contentStyle={{ background: '#1e293b', border: '1px solid #334155', borderRadius: 8 }} />
+              <Tooltip contentStyle={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 8, boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
             </PieChart>
           </ResponsiveContainer>
         </Card>
 
         <Card className="lg:col-span-2">
-          <h3 className="font-semibold text-white mb-4 text-sm">Category Completion %</h3>
+          <h3 className="font-bold text-slate-900 mb-4 text-sm">Category Completion %</h3>
           <ResponsiveContainer width="100%" height={210}>
             <BarChart data={catBarData} margin={{ top: 0, right: 10, left: -20, bottom: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
-              <XAxis dataKey="name" tick={{ fill: '#94a3b8', fontSize: 10 }} />
-              <YAxis tick={{ fill: '#94a3b8', fontSize: 10 }} domain={[0, 100]} />
-              <Tooltip contentStyle={{ background: '#1e293b', border: '1px solid #334155', borderRadius: 8 }} />
-              <Bar dataKey="completion" fill="#3b82f6" radius={[4,4,0,0]} />
+              <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+              <XAxis dataKey="name" tick={{ fill: '#64748b', fontSize: 11, fontWeight: 500 }} />
+              <YAxis tick={{ fill: '#64748b', fontSize: 11 }} domain={[0, 100]} />
+              <Tooltip contentStyle={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 8, boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
+              <Bar dataKey="completion" fill="#2563eb" radius={[4,4,0,0]} />
             </BarChart>
           </ResponsiveContainer>
         </Card>
@@ -224,8 +223,8 @@ export const Dashboard: React.FC = () => {
       <div>
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h2 className="font-bold text-white text-lg">Eight Vulnerability Categories Progress Cards</h2>
-            <p className="text-xs text-slate-400">Practical workspaces for all eight required PortSwigger categories</p>
+            <h2 className="font-bold text-slate-900 text-lg">Eight Vulnerability Categories Progress Cards</h2>
+            <p className="text-xs text-slate-500">Practical workspaces for all eight required PortSwigger categories</p>
           </div>
           <Button variant="secondary" size="sm" onClick={() => navigate('/risk')}>
             View Risk & Marking Scheme
@@ -238,35 +237,35 @@ export const Dashboard: React.FC = () => {
             return (
               <div
                 key={cat.slug}
-                className="bg-slate-900 border border-slate-800 rounded-xl p-4 hover:border-blue-700/50 transition-colors flex flex-col justify-between"
+                className="bg-white border border-slate-200 rounded-xl p-4 hover:border-blue-400 hover:shadow-md transition-all flex flex-col justify-between shadow-2xs"
               >
                 <div>
                   <div className="flex items-start justify-between gap-2 mb-2">
                     <div className="flex items-center gap-2">
                       <span className="text-xl">{cat.icon}</span>
                       <div>
-                        <div className="text-sm font-semibold text-white leading-tight">{cat.name}</div>
-                        <div className="text-[11px] text-slate-500">{cat.owasp}</div>
+                        <div className="text-sm font-bold text-slate-900 leading-tight">{cat.name}</div>
+                        <div className="text-[11px] text-slate-500 font-medium">{cat.owasp}</div>
                       </div>
                     </div>
                     {catStat && <StatusBadge status={catStat.status} />}
                   </div>
 
                   {/* Lab Name display */}
-                  <div className="bg-slate-950/60 rounded px-2.5 py-1.5 my-2.5 border border-slate-800/80">
-                    <div className="text-[10px] text-slate-500 uppercase tracking-wider font-semibold">Active Lab</div>
-                    <div className="text-xs text-slate-300 font-medium truncate" title={catStat?.lab_name || 'No lab recorded'}>
+                  <div className="bg-slate-50 rounded-lg px-2.5 py-1.5 my-2.5 border border-slate-200">
+                    <div className="text-[10px] text-slate-500 uppercase tracking-wider font-bold">Active Lab</div>
+                    <div className="text-xs text-slate-800 font-semibold truncate" title={catStat?.lab_name || 'No lab recorded'}>
                       {catStat?.lab_name || 'No lab recorded'}
                     </div>
                   </div>
 
                   <div className="space-y-1.5 mt-2">
                     <div className="flex items-center justify-between text-xs">
-                      <span className="text-slate-400">Progress</span>
-                      <span className="text-blue-400 font-semibold">{catStat?.completion_percentage || 0}%</span>
+                      <span className="text-slate-500 font-medium">Progress</span>
+                      <span className="text-blue-600 font-bold">{catStat?.completion_percentage || 0}%</span>
                     </div>
                     <ProgressBar value={catStat?.completion_percentage || 0} />
-                    <div className="flex items-center justify-between text-[11px] text-slate-500 pt-1">
+                    <div className="flex items-center justify-between text-[11px] text-slate-500 pt-1 font-medium">
                       <span>{catStat?.finding_count || 0} finding{catStat?.finding_count === 1 ? '' : 's'}</span>
                       <span>{catStat?.evidence_count || 0} screenshot{catStat?.evidence_count === 1 ? '' : 's'}</span>
                     </div>
@@ -274,7 +273,7 @@ export const Dashboard: React.FC = () => {
                 </div>
 
                 <Button
-                  variant="ghost"
+                  variant="secondary"
                   size="sm"
                   className="w-full mt-4 justify-center text-xs"
                   onClick={() => navigate(`/${cat.slug}`)}
@@ -291,16 +290,16 @@ export const Dashboard: React.FC = () => {
       {/* Recent Activity */}
       {stats?.recent_activities && stats.recent_activities.length > 0 && (
         <Card>
-          <h2 className="font-semibold text-white mb-4 flex items-center gap-2 text-sm">
-            <Activity size={16} className="text-blue-400" />
+          <h2 className="font-bold text-slate-900 mb-4 flex items-center gap-2 text-sm">
+            <Activity size={16} className="text-blue-600" />
             Recent Assessment Activity
           </h2>
           <div className="space-y-2">
             {stats.recent_activities.slice(0, 8).map((a: any) => (
-              <div key={a.id} className="flex items-center gap-3 py-2 border-b border-slate-800/80 last:border-0">
-                <div className="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0" />
-                <div className="flex-1 text-xs text-slate-300 font-medium">{a.description}</div>
-                <div className="text-[11px] text-slate-500 flex-shrink-0">
+              <div key={a.id} className="flex items-center gap-3 py-2 border-b border-slate-100 last:border-0">
+                <div className="w-2 h-2 bg-blue-600 rounded-full flex-shrink-0" />
+                <div className="flex-1 text-xs text-slate-700 font-medium">{a.description}</div>
+                <div className="text-[11px] text-slate-400 font-medium flex-shrink-0">
                   {new Date(a.created_at).toLocaleString()}
                 </div>
               </div>

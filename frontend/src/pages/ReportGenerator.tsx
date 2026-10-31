@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { Download, FileText, RefreshCw, CheckCircle, AlertCircle, File } from 'lucide-react'
+import { Download, FileText, RefreshCw, CheckCircle, File } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { useApp } from '../hooks/useApp'
-import { generateReport, getProjectReports, exportEvidence } from '../services/api'
+import { generateReport, getProjectReports } from '../services/api'
 import { Card, Button, SectionHeader, Alert } from '../components/UI'
 
 export const ReportGenerator: React.FC = () => {
@@ -71,24 +71,24 @@ export const ReportGenerator: React.FC = () => {
 
       {/* Generation buttons */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card className="text-center">
+        <Card className="text-center p-6 hover:shadow-md transition-shadow">
           <div className="text-4xl mb-3">📄</div>
-          <h3 className="font-semibold text-white mb-1">PDF Report</h3>
-          <p className="text-slate-400 text-xs mb-4">Professional PDF with cover page, ToC, all findings, charts and evidence index</p>
+          <h3 className="font-semibold text-slate-800 text-base mb-1">PDF Report</h3>
+          <p className="text-slate-500 text-xs mb-5">Professional PDF with cover page, ToC, all findings, charts and evidence index</p>
           <Button
             className="w-full justify-center"
             onClick={() => handleGenerate('pdf')}
             loading={generating && genType === 'pdf'}
             disabled={!projectId || generating}
           >
-            <FileText size={14} /> Generate PDF
+            <FileText size={15} /> Generate PDF
           </Button>
         </Card>
 
-        <Card className="text-center">
+        <Card className="text-center p-6 hover:shadow-md transition-shadow">
           <div className="text-4xl mb-3">📝</div>
-          <h3 className="font-semibold text-white mb-1">DOCX Report</h3>
-          <p className="text-slate-400 text-xs mb-4">Editable Word document with styled headings, tables and finding details</p>
+          <h3 className="font-semibold text-slate-800 text-base mb-1">DOCX Report</h3>
+          <p className="text-slate-500 text-xs mb-5">Editable Word document with styled headings, tables and finding details</p>
           <Button
             className="w-full justify-center"
             variant="secondary"
@@ -96,29 +96,29 @@ export const ReportGenerator: React.FC = () => {
             loading={generating && genType === 'docx'}
             disabled={!projectId || generating}
           >
-            <FileText size={14} /> Generate DOCX
+            <FileText size={15} /> Generate DOCX
           </Button>
         </Card>
 
-        <Card className="text-center">
+        <Card className="text-center p-6 hover:shadow-md transition-shadow">
           <div className="text-4xl mb-3">🗜️</div>
-          <h3 className="font-semibold text-white mb-1">Evidence ZIP</h3>
-          <p className="text-slate-400 text-xs mb-4">Download all uploaded screenshots and evidence files as a ZIP archive</p>
+          <h3 className="font-semibold text-slate-800 text-base mb-1">Evidence ZIP</h3>
+          <p className="text-slate-500 text-xs mb-5">Download all uploaded screenshots and evidence files as a ZIP archive</p>
           <Button
             className="w-full justify-center"
             variant="success"
             onClick={handleExportEvidence}
             disabled={!projectId}
           >
-            <Download size={14} /> Export Evidence
+            <Download size={15} /> Export Evidence
           </Button>
         </Card>
       </div>
 
       {/* Report structure preview */}
       <Card>
-        <h3 className="font-semibold text-white mb-4">📋 Report Structure</h3>
-        <div className="grid grid-cols-2 gap-2">
+        <h3 className="font-semibold text-slate-800 mb-4">📋 24-Section Report Structure</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
           {[
             '1. Cover Page', '2. Abstract', '3. Project Introduction', '4. Project Objective',
             '5. Scope of Assessment', '6. Tools & Technologies', '7. Methodology',
@@ -127,9 +127,9 @@ export const ReportGenerator: React.FC = () => {
             '11. Severity Classification', '12. Impact Analysis',
             '13. Recommendations', '14. Conclusion', '15. References',
           ].map((item, i) => (
-            <div key={i} className="flex items-center gap-2 text-sm text-slate-300 py-1">
-              <CheckCircle size={12} className="text-emerald-400 flex-shrink-0" />
-              {item}
+            <div key={i} className="flex items-center gap-2.5 text-xs font-medium text-slate-700 py-1 px-2 rounded bg-slate-50 border border-slate-100">
+              <CheckCircle size={14} className="text-emerald-600 flex-shrink-0" />
+              <span>{item}</span>
             </div>
           ))}
         </div>
@@ -139,26 +139,28 @@ export const ReportGenerator: React.FC = () => {
       {reports.length > 0 && (
         <Card>
           <div className="flex items-center justify-between mb-4">
-            <h3 className="font-semibold text-white">Previously Generated Reports</h3>
+            <h3 className="font-semibold text-slate-800">Previously Generated Reports</h3>
             <Button variant="ghost" size="sm" onClick={loadReports}>
               <RefreshCw size={12} /> Refresh
             </Button>
           </div>
-          <div className="space-y-2">
+          <div className="space-y-2.5">
             {reports.map(r => (
-              <div key={r.id} className="flex items-center justify-between bg-slate-800/50 rounded-lg p-3">
+              <div key={r.id} className="flex items-center justify-between bg-slate-50 border border-slate-200/80 rounded-lg p-3.5 hover:bg-slate-100/60 transition-colors">
                 <div className="flex items-center gap-3">
-                  <File size={16} className="text-blue-400" />
+                  <div className="p-2 bg-blue-50 text-blue-600 rounded-lg border border-blue-100">
+                    <File size={18} />
+                  </div>
                   <div>
-                    <div className="text-sm font-medium text-white">{r.filename}</div>
+                    <div className="text-sm font-semibold text-slate-800">{r.filename}</div>
                     <div className="text-xs text-slate-500">
-                      {r.report_type?.toUpperCase()} · {formatSize(r.file_size)} · {new Date(r.generated_at).toLocaleString()}
+                      <span className="font-medium text-blue-600">{r.report_type?.toUpperCase()}</span> · {formatSize(r.file_size)} · {new Date(r.generated_at).toLocaleString()}
                     </div>
                   </div>
                 </div>
                 <a href={`/api/reports/${r.id}/download`} target="_blank" rel="noopener noreferrer">
                   <Button variant="secondary" size="sm">
-                    <Download size={12} /> Download
+                    <Download size={13} /> Download
                   </Button>
                 </a>
               </div>
@@ -169,4 +171,3 @@ export const ReportGenerator: React.FC = () => {
     </div>
   )
 }
-

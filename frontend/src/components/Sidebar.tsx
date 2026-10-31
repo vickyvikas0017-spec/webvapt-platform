@@ -36,24 +36,24 @@ export const Sidebar: React.FC = () => {
   return (
     <aside
       className={clsx(
-        'fixed left-0 top-0 h-screen bg-slate-900 border-r border-slate-800 flex flex-col transition-all duration-300 z-50',
+        'fixed left-0 top-0 h-screen bg-white border-r border-slate-200 flex flex-col transition-all duration-300 z-50 shadow-2xs',
         sidebarOpen ? 'w-64' : 'w-16'
       )}
     >
       {/* Logo */}
-      <div className="flex items-center gap-3 px-4 py-5 border-b border-slate-800 min-h-[68px]">
-        <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
+      <div className="flex items-center gap-3 px-4 py-4 border-b border-slate-200 min-h-[64px]">
+        <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0 shadow-xs">
           <Bug size={18} className="text-white" />
         </div>
         {sidebarOpen && (
           <div>
-            <div className="font-bold text-blue-400 text-sm leading-none">WebVAPT</div>
-            <div className="text-slate-500 text-xs mt-0.5">PortSwigger Academy</div>
+            <div className="font-bold text-slate-900 text-sm leading-none">WebVAPT</div>
+            <div className="text-slate-500 text-xs mt-0.5 font-medium">PortSwigger Academy</div>
           </div>
         )}
         <button
           onClick={() => setSidebarOpen(!sidebarOpen)}
-          className="ml-auto text-slate-500 hover:text-white transition-colors"
+          className="ml-auto text-slate-400 hover:text-slate-700 transition-colors cursor-pointer"
         >
           {sidebarOpen ? <ChevronLeft size={16} /> : <ChevronRight size={16} />}
         </button>
@@ -65,11 +65,11 @@ export const Sidebar: React.FC = () => {
           if ('divider' in item) {
             return sidebarOpen ? (
               <div key={i} className="px-4 py-2 mt-2">
-                <span className="text-slate-600 text-xs font-semibold uppercase tracking-wider">
+                <span className="text-slate-400 text-[11px] font-bold uppercase tracking-wider">
                   {item.label}
                 </span>
               </div>
-            ) : <div key={i} className="my-1 mx-3 border-t border-slate-800" />
+            ) : <div key={i} className="my-1.5 mx-3 border-t border-slate-200" />
           }
 
           const Icon = item.icon!
@@ -80,14 +80,14 @@ export const Sidebar: React.FC = () => {
               key={item.path}
               to={item.path!}
               className={clsx(
-                'flex items-center gap-3 px-4 py-2.5 mx-2 rounded-lg transition-all text-sm',
+                'flex items-center gap-3 px-3.5 py-2 mx-2 rounded-lg transition-all text-sm',
                 active
-                  ? 'bg-blue-600/20 text-blue-400 border border-blue-700/30'
-                  : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                  ? 'bg-blue-50 text-blue-700 font-semibold border border-blue-200/80 shadow-2xs'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100 font-medium'
               )}
               title={!sidebarOpen ? item.label : undefined}
             >
-              <Icon size={16} className="flex-shrink-0" />
+              <Icon size={16} className={clsx('flex-shrink-0', active ? 'text-blue-600' : 'text-slate-500')} />
               {sidebarOpen && <span className="truncate">{item.label}</span>}
             </NavLink>
           )
@@ -96,7 +96,7 @@ export const Sidebar: React.FC = () => {
 
       {/* Version */}
       {sidebarOpen && (
-        <div className="px-4 py-3 border-t border-slate-800 text-xs text-slate-600">
+        <div className="px-4 py-3 border-t border-slate-200 text-xs text-slate-400 font-medium">
           WebVAPT v1.0 · Minor Project
         </div>
       )}

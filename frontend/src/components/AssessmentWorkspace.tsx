@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import {
   Plus, Save, Trash2, Upload, Eye, AlertCircle, CheckCircle,
-  FileText, Code, Image, ChevronDown, ChevronUp, ExternalLink
+  FileText, Code, Image
 } from 'lucide-react'
 import toast from 'react-hot-toast'
 import {
@@ -219,35 +219,39 @@ export const AssessmentWorkspace: React.FC<AssessmentWorkspaceProps> = ({
     <div className="space-y-5">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-white">{categoryName} Assessment</h1>
-        <p className="text-slate-400 text-sm mt-1">{description}</p>
-        <p className="text-xs text-blue-400 mt-1">{OWASP_MAP[categorySlug]}</p>
+        <h1 className="text-2xl font-bold text-slate-900">{categoryName} Assessment</h1>
+        <p className="text-slate-600 text-sm mt-1">{description}</p>
+        <span className="inline-block text-xs font-semibold text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-0.5 rounded-full mt-2">
+          {OWASP_MAP[categorySlug]}
+        </span>
       </div>
 
-      <div className="flex gap-5">
+      <div className="flex flex-col lg:flex-row gap-5">
         {/* Lab list */}
-        <div className="w-72 flex-shrink-0 space-y-3">
+        <div className="w-full lg:w-72 flex-shrink-0 space-y-3">
           <Button variant="primary" size="sm" className="w-full justify-center" onClick={newLab}>
             <Plus size={14} /> New Lab Record
           </Button>
 
           {loading ? (
-            <div className="text-center py-8 text-slate-500">Loading...</div>
+            <div className="text-center py-8 text-slate-400">Loading labs...</div>
           ) : labs.length === 0 ? (
-            <div className="text-center py-8 text-slate-600 text-sm">No labs yet.<br />Create your first lab record.</div>
+            <div className="text-center py-8 bg-white border border-dashed border-slate-200 rounded-xl text-slate-500 text-sm">
+              No labs yet.<br />Create your first lab record.
+            </div>
           ) : (
             labs.map(lab => (
               <button
                 key={lab.id}
                 onClick={() => selectLab(lab)}
-                className={`w-full text-left rounded-lg p-3 border transition-all ${
+                className={`w-full text-left rounded-xl p-3 border transition-all cursor-pointer shadow-2xs ${
                   selectedLab?.id === lab.id
-                    ? 'bg-blue-900/20 border-blue-700/50'
-                    : 'bg-slate-900 border-slate-800 hover:border-slate-700'
+                    ? 'bg-blue-50/80 border-blue-400 ring-2 ring-blue-500/10'
+                    : 'bg-white border-slate-200 hover:border-slate-300'
                 }`}
               >
-                <div className="text-sm font-medium text-white truncate">{lab.lab_name}</div>
-                <div className="flex items-center gap-2 mt-1">
+                <div className="text-sm font-semibold text-slate-900 truncate">{lab.lab_name}</div>
+                <div className="flex items-center gap-2 mt-1.5 mb-2">
                   <StatusBadge status={lab.status} />
                   {lab.severity && <SeverityBadge severity={lab.severity} />}
                 </div>
@@ -258,14 +262,14 @@ export const AssessmentWorkspace: React.FC<AssessmentWorkspaceProps> = ({
 
           {/* Workflow */}
           <Card>
-            <h3 className="text-xs font-semibold text-slate-400 uppercase mb-3">Workflow</h3>
+            <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">Assessment Workflow</h3>
             <ol className="space-y-2">
               {workflowSteps.map((step, i) => (
-                <li key={i} className="flex gap-2 text-xs text-slate-400">
-                  <span className="w-5 h-5 bg-slate-800 rounded-full flex items-center justify-center text-blue-400 flex-shrink-0 font-medium">
+                <li key={i} className="flex gap-2 text-xs text-slate-600">
+                  <span className="w-5 h-5 bg-slate-100 rounded-full flex items-center justify-center text-blue-600 flex-shrink-0 font-bold text-[11px] border border-slate-200">
                     {i + 1}
                   </span>
-                  {step}
+                  <span className="leading-tight pt-0.5">{step}</span>
                 </li>
               ))}
             </ol>
@@ -275,7 +279,7 @@ export const AssessmentWorkspace: React.FC<AssessmentWorkspaceProps> = ({
         {/* Main workspace */}
         <div className="flex-1 space-y-4">
           {/* Tab bar */}
-          <div className="flex gap-1 bg-slate-900 p-1 rounded-lg border border-slate-800">
+          <div className="flex gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200">
             {[
               { id: 'details', label: 'Lab Details', icon: FileText },
               { id: 'http', label: 'HTTP Data', icon: Code },
@@ -287,10 +291,10 @@ export const AssessmentWorkspace: React.FC<AssessmentWorkspaceProps> = ({
                 <button
                   key={tab.id}
                   onClick={() => setSection(tab.id as any)}
-                  className={`flex items-center gap-2 px-4 py-2 rounded text-sm font-medium transition-all ${
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all cursor-pointer ${
                     section === tab.id
-                      ? 'bg-blue-600 text-white'
-                      : 'text-slate-400 hover:text-white'
+                      ? 'bg-white text-blue-700 shadow-xs border border-slate-200/80'
+                      : 'text-slate-600 hover:text-slate-900'
                   }`}
                 >
                   <Icon size={14} />
@@ -304,7 +308,7 @@ export const AssessmentWorkspace: React.FC<AssessmentWorkspaceProps> = ({
           {section === 'details' && (
             <Card>
               <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <Field label="Lab Name" required>
                     <Input value={form.lab_name || ''} onChange={f('lab_name')} placeholder="Lab name from PortSwigger" />
                   </Field>
@@ -318,7 +322,7 @@ export const AssessmentWorkspace: React.FC<AssessmentWorkspaceProps> = ({
                 <Field label="Description">
                   <Textarea value={form.description || ''} onChange={f('description')} rows={3} placeholder="Describe the vulnerability scenario..." />
                 </Field>
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <Field label="Affected Endpoint">
                     <Input value={form.affected_endpoint || ''} onChange={f('affected_endpoint')} placeholder="/search?category=..." />
                   </Field>
@@ -337,7 +341,7 @@ export const AssessmentWorkspace: React.FC<AssessmentWorkspaceProps> = ({
                 <Field label="Steps to Reproduce">
                   <Textarea value={form.steps_to_reproduce || ''} onChange={f('steps_to_reproduce')} rows={5} placeholder="1. Open the lab URL&#10;2. Configure Burp Suite proxy&#10;3. ..." />
                 </Field>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <Field label="Impact">
                     <Textarea value={form.impact || ''} onChange={f('impact')} rows={3} placeholder="Describe the security impact..." />
                   </Field>
@@ -345,7 +349,7 @@ export const AssessmentWorkspace: React.FC<AssessmentWorkspaceProps> = ({
                     <Textarea value={form.recommendation || ''} onChange={f('recommendation')} rows={3} placeholder="How to fix this vulnerability..." />
                   </Field>
                 </div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <Field label="Severity">
                     <Select value={form.severity || ''} onChange={f('severity')}>
                       <option value="">Select severity</option>
@@ -358,7 +362,7 @@ export const AssessmentWorkspace: React.FC<AssessmentWorkspaceProps> = ({
                     </Select>
                   </Field>
                 </div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <Field label="Completion %" hint="0–100">
                     <Input type="number" min={0} max={100} value={form.completion_percentage ?? 0}
                       onChange={e => setForm(p => ({ ...p, completion_percentage: Number(e.target.value) }))} />
@@ -374,7 +378,7 @@ export const AssessmentWorkspace: React.FC<AssessmentWorkspaceProps> = ({
                   </Alert>
                 )}
 
-                <div className="flex gap-3">
+                <div className="flex gap-3 pt-2">
                   <Button onClick={handleSave} loading={saving}>
                     <Save size={14} /> {selectedLab ? 'Save Changes' : 'Create Lab'}
                   </Button>
@@ -397,24 +401,24 @@ export const AssessmentWorkspace: React.FC<AssessmentWorkspaceProps> = ({
               {selectedLab && (
                 <>
                   <Card>
-                    <h3 className="font-semibold text-white mb-3 flex items-center gap-2">
-                      <Code size={14} className="text-blue-400" /> Original HTTP Request
+                    <h3 className="font-bold text-slate-900 mb-2 flex items-center gap-2">
+                      <Code size={16} className="text-blue-600" /> Original HTTP Request
                     </h3>
-                    <p className="text-xs text-slate-500 mb-2">Paste the original request from Burp Proxy/Repeater</p>
+                    <p className="text-xs text-slate-500 mb-3">Paste the original request copied directly from Burp Proxy / Repeater</p>
                     <HttpEditor initialValue={origReq} onSave={v => handleSaveHttpReq('original', v)} placeholder="GET /search?category=Accessories HTTP/1.1&#10;Host: target.web-security-academy.net&#10;Cookie: session=abc123..." />
                   </Card>
                   <Card>
-                    <h3 className="font-semibold text-white mb-3 flex items-center gap-2">
-                      <Code size={14} className="text-orange-400" /> Modified HTTP Request (with payload)
+                    <h3 className="font-bold text-slate-900 mb-2 flex items-center gap-2">
+                      <Code size={16} className="text-amber-600" /> Modified HTTP Request (with payload)
                     </h3>
-                    <p className="text-xs text-slate-500 mb-2">Paste the modified request containing your payload</p>
+                    <p className="text-xs text-slate-500 mb-3">Paste the modified request containing your injected payload</p>
                     <HttpEditor initialValue={modReq} onSave={v => handleSaveHttpReq('modified', v)} placeholder="GET /search?category=Accessories'--  HTTP/1.1&#10;Host: target.web-security-academy.net&#10;..." />
                   </Card>
                   <Card>
-                    <h3 className="font-semibold text-white mb-3 flex items-center gap-2">
-                      <Code size={14} className="text-emerald-400" /> HTTP Response
+                    <h3 className="font-bold text-slate-900 mb-2 flex items-center gap-2">
+                      <Code size={16} className="text-emerald-600" /> HTTP Response Received
                     </h3>
-                    <p className="text-xs text-slate-500 mb-2">Paste the server response</p>
+                    <p className="text-xs text-slate-500 mb-3">Paste the server response received from Burp Repeater</p>
                     <HttpEditor initialValue={resp} onSave={handleSaveHttpResp} placeholder="HTTP/1.1 200 OK&#10;Content-Type: text/html&#10;..." />
                   </Card>
                 </>
@@ -429,13 +433,13 @@ export const AssessmentWorkspace: React.FC<AssessmentWorkspaceProps> = ({
                 <Alert type="info">Save the lab first to upload evidence.</Alert>
               ) : (
                 <div className="space-y-6">
-                  <p className="text-slate-400 text-sm">
-                    Upload Burp Suite screenshots and proof of exploitation. Supported: PNG, JPG, PDF, TXT (max 20MB each).
+                  <p className="text-slate-600 text-sm">
+                    Upload Burp Suite screenshots and proof of exploitation. Supported: PNG, JPG, JPEG, PDF, TXT (max 20MB each).
                   </p>
                   {['burp_request', 'burp_response', 'proof', 'additional'].map(evType => (
-                    <div key={evType}>
-                      <div className="flex items-center justify-between mb-2">
-                        <h4 className="text-sm font-medium text-white capitalize">
+                    <div key={evType} className="border-b border-slate-100 pb-5 last:border-0">
+                      <div className="flex items-center justify-between mb-3">
+                        <h4 className="text-sm font-bold text-slate-900 capitalize">
                           {evType === 'burp_request' ? '📸 Burp Request Screenshot' :
                            evType === 'burp_response' ? '📸 Burp Response Screenshot' :
                            evType === 'proof' ? '✅ Proof of Exploitation' : '📁 Additional Evidence'}
@@ -448,12 +452,12 @@ export const AssessmentWorkspace: React.FC<AssessmentWorkspaceProps> = ({
                           </Button>
                         </label>
                       </div>
-                      <div className="grid grid-cols-2 gap-3">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                         {evByType(evType).map(ev => (
                           <EvidenceCard key={ev.id} evidence={ev} onDelete={() => handleDeleteEvidence(ev.id)} />
                         ))}
                         {evByType(evType).length === 0 && (
-                          <div className="col-span-2 text-center py-6 border border-dashed border-slate-700 rounded-lg text-slate-600 text-sm">
+                          <div className="col-span-1 md:col-span-2 text-center py-6 border border-dashed border-slate-200 rounded-xl text-slate-400 text-sm bg-slate-50/50">
                             No {evType.replace('_', ' ')} uploaded yet
                           </div>
                         )}
@@ -473,7 +477,7 @@ export const AssessmentWorkspace: React.FC<AssessmentWorkspaceProps> = ({
               ) : (
                 <>
                   <div className="flex justify-between items-center">
-                    <h3 className="font-semibold text-white">Vulnerability Findings</h3>
+                    <h3 className="font-bold text-slate-900">Vulnerability Findings</h3>
                     <Button size="sm" onClick={() => setShowFindingForm(true)}>
                       <Plus size={14} /> Add Finding
                     </Button>
@@ -481,12 +485,12 @@ export const AssessmentWorkspace: React.FC<AssessmentWorkspaceProps> = ({
 
                   {showFindingForm && (
                     <Card>
-                      <h4 className="font-semibold text-white mb-4">New Finding</h4>
+                      <h4 className="font-bold text-slate-900 mb-4">New Finding Record</h4>
                       <div className="space-y-3">
                         <Field label="Title" required>
                           <Input value={findingForm.title || ''} onChange={e => setFindingForm(p => ({ ...p, title: e.target.value }))} placeholder="e.g., SQL Injection in product search" />
                         </Field>
-                        <div className="grid grid-cols-2 gap-3">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                           <Field label="Severity">
                             <Select value={findingForm.severity || 'Medium'} onChange={e => setFindingForm(p => ({ ...p, severity: e.target.value }))}>
                               {SEVERITY_LEVELS.map(s => <option key={s}>{s}</option>)}
@@ -501,7 +505,7 @@ export const AssessmentWorkspace: React.FC<AssessmentWorkspaceProps> = ({
                         <Field label="Severity Justification">
                           <Textarea value={findingForm.severity_justification || ''} onChange={e => setFindingForm(p => ({ ...p, severity_justification: e.target.value }))} rows={2} placeholder="Justify the severity rating based on actual lab impact..." />
                         </Field>
-                        <div className="flex gap-2">
+                        <div className="flex gap-2 pt-2">
                           <Button onClick={handleCreateFinding}><CheckCircle size={14} /> Create Finding</Button>
                           <Button variant="ghost" onClick={() => setShowFindingForm(false)}>Cancel</Button>
                         </div>
@@ -510,23 +514,25 @@ export const AssessmentWorkspace: React.FC<AssessmentWorkspaceProps> = ({
                   )}
 
                   {findings.length === 0 ? (
-                    <div className="text-center py-12 text-slate-600">No findings yet.</div>
+                    <div className="text-center py-12 bg-white rounded-xl border border-dashed border-slate-200 text-slate-400">
+                      No findings recorded yet for this lab.
+                    </div>
                   ) : (
                     findings.map(f => (
-                      <Card key={f.id}>
+                      <Card key={f.id} className="hover:border-slate-300 transition-all">
                         <div className="flex items-center justify-between">
                           <div>
-                            <span className="text-xs text-blue-400 font-mono">{f.finding_id}</span>
-                            <h4 className="font-semibold text-white">{f.title}</h4>
+                            <span className="text-xs text-blue-600 font-mono font-bold">{f.finding_id}</span>
+                            <h4 className="font-bold text-slate-900 text-base">{f.title}</h4>
                           </div>
                           <div className="flex items-center gap-2">
                             <SeverityBadge severity={f.severity} />
                             <StatusBadge status={f.testing_status} />
                           </div>
                         </div>
-                        {f.description && <p className="text-slate-400 text-sm mt-2">{f.description}</p>}
-                        {f.impact && <p className="text-slate-500 text-xs mt-1"><strong>Impact:</strong> {f.impact}</p>}
-                        {f.recommendation && <p className="text-slate-500 text-xs mt-1"><strong>Recommendation:</strong> {f.recommendation}</p>}
+                        {f.description && <p className="text-slate-600 text-sm mt-2">{f.description}</p>}
+                        {f.impact && <p className="text-slate-700 text-xs mt-1.5 font-medium"><strong className="text-slate-900">Impact:</strong> {f.impact}</p>}
+                        {f.recommendation && <p className="text-slate-700 text-xs mt-1 font-medium"><strong className="text-slate-900">Recommendation:</strong> {f.recommendation}</p>}
                       </Card>
                     ))
                   )}
@@ -540,12 +546,14 @@ export const AssessmentWorkspace: React.FC<AssessmentWorkspaceProps> = ({
       {/* Learning References */}
       {learningRefs && learningRefs.length > 0 && (
         <Card>
-          <h3 className="font-semibold text-white mb-3 text-sm">📚 Learning References</h3>
-          <div className="grid grid-cols-2 gap-3">
+          <h3 className="font-bold text-slate-900 mb-3 text-sm flex items-center gap-2">
+            <span>📚</span> Educational & Learning References
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {learningRefs.map((ref, i) => (
-              <div key={i} className="bg-slate-800/50 rounded-lg p-3">
-                <div className="text-sm font-medium text-blue-300">{ref.label}</div>
-                <div className="text-xs text-slate-400 mt-1">{ref.desc}</div>
+              <div key={i} className="bg-slate-50 border border-slate-200/80 rounded-xl p-3.5">
+                <div className="text-sm font-bold text-blue-700">{ref.label}</div>
+                <div className="text-xs text-slate-600 mt-1">{ref.desc}</div>
               </div>
             ))}
           </div>
@@ -566,7 +574,7 @@ const HttpEditor: React.FC<{
     <div className="space-y-2">
       <CodeEditor value={value} onChange={e => setValue(e.target.value)} placeholder={placeholder} rows={8} />
       <Button variant="secondary" size="sm" onClick={() => onSave(value)}>
-        <Save size={12} /> Save
+        <Save size={12} /> Save HTTP Content
       </Button>
     </div>
   )
@@ -578,21 +586,21 @@ const EvidenceCard: React.FC<{ evidence: Evidence; onDelete: () => void }> = ({ 
   const isImage = ev.mime_type?.startsWith('image/')
   const url = getEvidenceFileUrl(ev.id)
   return (
-    <div className="bg-slate-800 rounded-lg p-3 border border-slate-700">
+    <div className="bg-white rounded-xl p-3 border border-slate-200 shadow-2xs">
       {isImage ? (
         <a href={url} target="_blank" rel="noopener noreferrer">
-          <img src={url} alt={ev.original_filename} className="w-full h-32 object-cover rounded mb-2" />
+          <img src={url} alt={ev.original_filename} className="w-full h-32 object-cover rounded-lg mb-2 border border-slate-100" />
         </a>
       ) : (
-        <div className="h-20 flex items-center justify-center bg-slate-900 rounded mb-2">
-          <FileText size={24} className="text-slate-500" />
+        <div className="h-24 flex items-center justify-center bg-slate-50 rounded-lg mb-2 border border-slate-100">
+          <FileText size={24} className="text-slate-400" />
         </div>
       )}
-      <div className="text-xs text-slate-300 truncate">{ev.original_filename}</div>
-      <div className="text-xs text-slate-500">{ev.file_size ? `${(ev.file_size / 1024).toFixed(1)} KB` : ''}</div>
-      <div className="flex gap-2 mt-2">
+      <div className="text-xs text-slate-800 font-semibold truncate">{ev.original_filename}</div>
+      <div className="text-[11px] text-slate-500 mt-0.5 font-medium">{ev.file_size ? `${(ev.file_size / 1024).toFixed(1)} KB` : ''}</div>
+      <div className="flex gap-2 mt-2.5">
         <a href={url} target="_blank" rel="noopener noreferrer">
-          <Button variant="ghost" size="sm"><Eye size={12} /> View</Button>
+          <Button variant="secondary" size="sm"><Eye size={12} /> View</Button>
         </a>
         <Button variant="danger" size="sm" onClick={onDelete}><Trash2 size={12} /></Button>
       </div>

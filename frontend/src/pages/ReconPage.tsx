@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { Save, Plus, Trash2 } from 'lucide-react'
+import { Save } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { useApp } from '../hooks/useApp'
-import { getLabs } from '../services/api'
-import { createRecon, getReconByLab, updateRecon } from '../services/api'
+import { getLabs, createRecon, getReconByLab, updateRecon } from '../services/api'
 import { Lab } from '../utils/types'
 import { Card, Field, Input, Textarea, Button, Select, SectionHeader, Alert } from '../components/UI'
 
@@ -71,7 +70,6 @@ export const ReconPage: React.FC = () => {
           testing_methodology: r.testing_methodology || '',
           notes: r.notes || '',
         })
-        // parse checklist
         if (r.checklist_completed) {
           const parsed: Record<string, boolean> = {}
           r.checklist_completed.split(',').forEach((item: string) => { if (item) parsed[item.trim()] = true })
@@ -106,11 +104,11 @@ export const ReconPage: React.FC = () => {
     <div className="space-y-5">
       <SectionHeader title="Reconnaissance & Understanding" subtitle="Document your understanding of each lab before starting vulnerability testing" />
 
-      <div className="flex gap-5">
+      <div className="flex flex-col md:flex-row gap-5">
         {/* Lab selector + checklist */}
-        <div className="w-72 flex-shrink-0 space-y-4">
+        <div className="w-full md:w-80 flex-shrink-0 space-y-4">
           <Card>
-            <h3 className="text-sm font-semibold text-white mb-3">Select Lab</h3>
+            <h3 className="text-sm font-semibold text-slate-800 mb-3">Select Lab</h3>
             <Select value={selectedLabId || ''} onChange={e => setSelectedLabId(Number(e.target.value))}>
               <option value="">Choose a lab...</option>
               {labs.map(l => <option key={l.id} value={l.id}>[{l.category_slug.toUpperCase()}] {l.lab_name}</option>)}
@@ -118,24 +116,27 @@ export const ReconPage: React.FC = () => {
           </Card>
 
           <Card>
-            <h3 className="text-sm font-semibold text-white mb-3">
-              Recon Checklist ({checkedCount}/{RECON_CHECKLIST.length})
-            </h3>
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-sm font-semibold text-slate-800">Recon Checklist</h3>
+              <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200">
+                {checkedCount}/{RECON_CHECKLIST.length}
+              </span>
+            </div>
             <div className="space-y-2">
               {RECON_CHECKLIST.map(item => (
-                <label key={item} className="flex items-center gap-2 cursor-pointer group">
+                <label key={item} className="flex items-center gap-2.5 cursor-pointer group hover:bg-slate-50 p-1.5 rounded transition-colors">
                   <input
                     type="checkbox"
                     checked={checklist[item] || false}
                     onChange={e => setChecklist(p => ({ ...p, [item]: e.target.checked }))}
-                    className="w-4 h-4 rounded accent-blue-500"
+                    className="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
                   />
-                  <span className="text-xs text-slate-300 group-hover:text-white transition-colors">{item}</span>
+                  <span className="text-xs text-slate-700 group-hover:text-slate-900 transition-colors">{item}</span>
                 </label>
               ))}
             </div>
-            <div className="mt-3 w-full bg-slate-800 rounded-full h-1.5">
-              <div className="bg-blue-500 h-1.5 rounded-full transition-all" style={{ width: `${(checkedCount / RECON_CHECKLIST.length) * 100}%` }} />
+            <div className="mt-3 w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
+              <div className="bg-blue-600 h-1.5 rounded-full transition-all" style={{ width: `${(checkedCount / RECON_CHECKLIST.length) * 100}%` }} />
             </div>
           </Card>
         </div>
@@ -143,10 +144,10 @@ export const ReconPage: React.FC = () => {
         {/* Form */}
         <Card className="flex-1">
           {!selectedLabId ? (
-            <div className="text-center py-12 text-slate-500">Select a lab to begin reconnaissance documentation</div>
+            <div className="text-center py-16 text-slate-400">Select a lab on the left to begin reconnaissance documentation</div>
           ) : (
             <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Field label="Lab Name">
                   <Input value={form.lab_name} onChange={f('lab_name')} placeholder="PortSwigger lab name" />
                 </Field>
@@ -159,7 +160,7 @@ export const ReconPage: React.FC = () => {
                 <Textarea value={form.lab_objective} onChange={f('lab_objective')} rows={2} placeholder="What is this lab testing?" />
               </Field>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Field label="Application Behaviour">
                   <Textarea value={form.application_behaviour} onChange={f('application_behaviour')} rows={3} placeholder="How does the application behave normally?" />
                 </Field>
@@ -168,7 +169,7 @@ export const ReconPage: React.FC = () => {
                 </Field>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Field label="HTTP Methods Observed">
                   <Input value={form.http_methods} onChange={f('http_methods')} placeholder="GET, POST, PUT..." />
                 </Field>
@@ -185,7 +186,7 @@ export const ReconPage: React.FC = () => {
                 <Textarea value={form.observed_input_fields} onChange={f('observed_input_fields')} rows={2} placeholder="Search box, login form, URL parameter..." />
               </Field>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Field label="User Roles">
                   <Input value={form.user_roles} onChange={f('user_roles')} placeholder="Anonymous, User, Admin..." />
                 </Field>
@@ -218,9 +219,11 @@ export const ReconPage: React.FC = () => {
                 <Textarea value={form.notes} onChange={f('notes')} rows={2} placeholder="Any additional notes..." />
               </Field>
 
-              <Button onClick={handleSave} loading={saving}>
-                <Save size={14} /> Save Recon Record
-              </Button>
+              <div className="pt-2">
+                <Button onClick={handleSave} loading={saving}>
+                  <Save size={15} /> Save Recon Record
+                </Button>
+              </div>
             </div>
           )}
         </Card>
@@ -228,4 +231,3 @@ export const ReconPage: React.FC = () => {
     </div>
   )
 }
-
